@@ -15,6 +15,9 @@
   "bugs": {
     "url": "https://github.com/DmitriyLazarev/frontend-project-lvl3/issues"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "homepage": "https://github.com/DmitriyLazarev/frontend-project-lvl3#readme",
   "dependencies": {
     "bootstrap": "^5.1.3",
