@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/DmitriyLazarev/frontend-project-lvl3.git"
   },
+  "private": true,
   "author": "Dmitriy Lazarev",
   "license": "ISC",
   "bugs": {
