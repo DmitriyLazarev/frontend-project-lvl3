@@ -6,7 +6,7 @@ import form from './main/form.js';
 export default () => {
   i18next.init({
     lng: 'ru',
-    debug: true,
+    debug: false,
     resources: {
       ru: {
         translation: {
