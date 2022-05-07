@@ -3,6 +3,7 @@
 
 import * as yup from 'yup';
 import onChange from 'on-change';
+import i18next from 'i18next';
 import { isArray, isEmpty } from 'lodash';
 
 const renderer = (state, elements) => {
@@ -21,24 +22,24 @@ const renderer = (state, elements) => {
 
   elements.inputLabel.setAttribute('for', name);
   elements.inputLabel.classList.add('text-white', 'mb-2');
-  elements.inputLabel.textContent = 'Ссылка RSS';
+  elements.inputLabel.textContent = i18next.t('form.inputLabel');
 
   elements.errorBlock.classList.add('feedback', 'mb-0', 'mt-2', 'text-danger', 'small');
 
   elements.submitButton.setAttribute('type', 'submit');
   elements.submitButton.setAttribute('disabled', 'true');
   elements.submitButton.classList.add('h-100', 'btn', 'btn-lg', 'btn-primary', 'px-sm-5', 'mt-4');
-  elements.submitButton.textContent = 'Добавить';
+  elements.submitButton.textContent = i18next.t('form.submitButton');
 };
 
 const validate = (value, values) => {
   const schema = yup.string()
     .matches(
       /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Ссылка должна быть валидным URL.',
+      i18next.t('form.errors.wrongUrl'),
     )
-    .test('Уже есть', 'RSS уже существует.', (v) => !values.includes(v))
-    .required('Поле должно быть заполнено.');
+    .test('isIncluded', i18next.t('form.errors.isIncluded'), (v) => !values.includes(v))
+    .required(i18next.t('form.errors.required'));
   try {
     schema.validateSync(value, { abortEarly: false });
     return {};

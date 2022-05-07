@@ -1,11 +1,13 @@
-const infoLayout = (titleText = '', descriptionText = '') => {
+import i18next from 'i18next';
+
+const infoLayout = () => {
   const title = document.createElement('h1');
   title.classList.add('display-3', 'mb-0');
-  title.textContent = titleText;
+  title.textContent = i18next.t('title');
 
   const description = document.createElement('p');
   description.classList.add('lead');
-  description.textContent = descriptionText;
+  description.textContent = i18next.t('description');
 
   return [title, description];
 };

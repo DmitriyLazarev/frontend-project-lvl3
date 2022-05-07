@@ -2,12 +2,12 @@ import mainLayout from './main.js';
 import footerLayout from './footer.js';
 import infoLayout from './info.js';
 
-const baseLayout = (titleText, descriptionText) => {
+const baseLayout = () => {
   const { body } = document;
   body.classList.add('d-flex', 'flex-column', 'min-vh-100');
 
   const [main, dataContainer, resultContainer] = mainLayout();
-  const [title, description] = infoLayout(titleText, descriptionText);
+  const [title, description] = infoLayout();
   const footer = footerLayout();
 
   body.append(main, footer);
