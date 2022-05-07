@@ -100,7 +100,7 @@ const form = (dataContainer) => {
     errors: {},
     valid: true,
     field: '',
-    values: ['https://123.ru'],
+    values: [],
   }, watchedState(elements));
 
   input.addEventListener('input', (e) => {
