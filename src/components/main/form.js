@@ -31,15 +31,16 @@ const renderer = (state, elements) => {
   elements.submitButton.textContent = 'Добавить';
 };
 
-const validate = (field) => {
+const validate = (value, values) => {
   const schema = yup.string()
     .matches(
       /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
       'Ссылка должна быть валидным URL.',
     )
+    .test('Уже есть', 'RSS уже существует.', (v) => !values.includes(v))
     .required('Поле должно быть заполнено.');
   try {
-    schema.validateSync(field, { abortEarly: false });
+    schema.validateSync(value, { abortEarly: false });
     return {};
   } catch (e) {
     return e;
@@ -70,6 +71,7 @@ const watchedState = (elements) => (path, value) => {
 
     case 'field':
       break;
+
     default:
       throw new Error(`Unknown state path: ${path}`);
   }
@@ -98,12 +100,13 @@ const form = (dataContainer) => {
     errors: {},
     valid: true,
     field: '',
+    values: ['https://123.ru'],
   }, watchedState(elements));
 
   input.addEventListener('input', (e) => {
     const { value } = e.target;
     state.field = value;
-    state.errors = validate(state.field);
+    state.errors = validate(state.field, state.values);
     state.valid = isEmpty(state.errors);
   });
 
