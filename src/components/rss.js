@@ -12,7 +12,7 @@ export default () => {
       ru,
     },
   }).then(() => {
-    const [dataContainer] = baseLayout();
-    form(dataContainer);
+    const [dataContainer, resultContainer] = baseLayout();
+    form(dataContainer, resultContainer);
   });
 };

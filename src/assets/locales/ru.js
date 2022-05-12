@@ -12,5 +12,12 @@ export default {
         invalidRSS: 'Ресурс не содержит валидный RSS.',
       },
     },
+    content: {
+      postsTitle: 'Посты',
+      feedsTitle: 'Фиды',
+      watchButton: 'Просмотр',
+      readMore: 'Читать полностью',
+      close: 'Закрыть',
+    },
   },
 };

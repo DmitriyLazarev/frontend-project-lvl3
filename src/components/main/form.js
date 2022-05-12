@@ -6,12 +6,14 @@ import onChange from 'on-change';
 import i18next from 'i18next';
 import axios from 'axios';
 import { isArray, isEmpty } from 'lodash';
+import rssRenderer from './rssRenderer.js';
+import globalState from './state.js';
 
 const renderer = (state, elements) => {
   elements.form.classList.add('rss-form', 'text-body');
 
   const name = 'url';
-  elements.field.setAttribute('type', 'text');
+  elements.field.setAttribute('type', 'url');
   elements.field.setAttribute('name', name);
   elements.field.setAttribute('id', name);
   elements.field.setAttribute('autocomplete', 'off');
@@ -38,13 +40,13 @@ const renderer = (state, elements) => {
   elements.submitButton.prepend(elements.loader);
 };
 
-const validate = (value, values) => {
+const validate = (value, urls) => {
   const schema = yup.string()
     .matches(
       /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z\d@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z\d@:%_+.~#?&/=]*)/,
       i18next.t('form.errors.wrongUrl'),
     )
-    .test('isIncluded', i18next.t('form.errors.isIncluded'), (v) => !values.includes(v))
+    .test('isIncluded', i18next.t('form.errors.isIncluded'), (v) => !urls.includes(v))
     .required(i18next.t('form.errors.required'));
   try {
     schema.validateSync(value, { abortEarly: false });
@@ -75,6 +77,7 @@ const watchedState = (elements) => (path, value) => {
       break;
 
     case 'field':
+    case 'urls':
       break;
 
     default:
@@ -94,17 +97,19 @@ const waitingData = (isDataLoading, elements, error = '') => {
     elements.submitButton.removeAttribute('disabled');
     if (error.length === 0) {
       elements.field.value = '';
+    } else {
+      elements.errorBlock.textContent = error;
     }
     elements.field.focus();
   }
 };
 
-const rssParser = (url) => axios.get(url)
-  .then((data) => new DOMParser().parseFromString(data.data, 'text/xml'))
+const rssParser = (url) => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${url}`)
+  .then((data) => new DOMParser().parseFromString(data.data.contents, 'text/xml'))
   .then((data) => data)
   .catch((error) => error);
 
-const form = (dataContainer) => {
+const form = (dataContainer, resultContainer) => {
   const formElement = document.createElement('form');
   const inputLabel = document.createElement('label');
   const input = document.createElement('input');
@@ -124,19 +129,13 @@ const form = (dataContainer) => {
     loader,
   };
 
-  const state = onChange({
-    processState: 'filling',
-    errors: {},
-    valid: true,
-    field: '',
-    values: [],
-  }, watchedState(elements));
+  const state = onChange(globalState, watchedState(elements));
 
   formElement.addEventListener('submit', (e) => {
     e.preventDefault();
     const url = formElement.elements.url.value;
     state.field = url;
-    state.errors = validate(state.field, state.values);
+    state.errors = validate(state.field, state.urls);
     state.valid = isEmpty(state.errors);
 
     if (state.valid) {
@@ -144,10 +143,17 @@ const form = (dataContainer) => {
       const parser = rssParser(url, elements, state);
       parser
         .then((data) => {
-          console.log(data);
-          waitingData(false, elements);
+          const rss = data.querySelectorAll('rss');
+          let rssError = '';
+          if (rss.length > 0) {
+            state.urls.push(url);
+            rssRenderer(data, resultContainer);
+          } else {
+            rssError = i18next.t('form.errors.invalidRSS');
+          }
+          waitingData(false, elements, rssError);
         })
-        .catch((error) => error);
+        .catch((error) => console.log(error));
     }
   });
 
