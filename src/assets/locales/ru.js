@@ -9,6 +9,7 @@ export default {
         wrongUrl: 'Ссылка должна быть валидным URL.',
         required: 'Поле должно быть заполнено.',
         isIncluded: 'RSS уже существует.',
+        invalidRSS: 'Ресурс не содержит валидный RSS.',
       },
     },
   },
