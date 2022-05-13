@@ -10,6 +10,7 @@ export default {
         required: 'Поле должно быть заполнено.',
         isIncluded: 'RSS уже существует.',
         invalidRSS: 'Ресурс не содержит валидный RSS.',
+        network: 'Ошибка загрузки ресурса.',
       },
     },
     content: {
