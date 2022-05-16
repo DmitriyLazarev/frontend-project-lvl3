@@ -13,7 +13,6 @@ import renderErrors from './renderers/errors.js';
 import renderValidForm from './renderers/valid-form.js';
 import validate from './modules/validator.js';
 import rssParser from './modules/rss-parser.js';
-import checkUpdates from './modules/check-updates.js';
 
 const watchedState = (elements) => (path, value) => {
   switch (path) {
@@ -39,10 +38,11 @@ const form = (dataContainer, resultContainer) => {
   const inputLabel = document.createElement('label');
   const input = document.createElement('input');
   const errorBlock = document.createElement('p');
+  const successBlock = document.createElement('p');
   const submitButton = document.createElement('button');
   const loader = document.createElement('span');
 
-  formElement.append(inputLabel, input, errorBlock, submitButton);
+  formElement.append(inputLabel, input, errorBlock, successBlock, submitButton);
   dataContainer.append(formElement);
 
   const elements = {
@@ -50,6 +50,7 @@ const form = (dataContainer, resultContainer) => {
     field: input,
     inputLabel,
     errorBlock,
+    successBlock,
     submitButton,
     loader,
   };
@@ -62,6 +63,7 @@ const form = (dataContainer, resultContainer) => {
     state.field = url;
     state.errors = validate(state.field, state.urls);
     state.valid = isEmpty(state.errors);
+    elements.successBlock.textContent = '';
 
     if (state.valid) {
       loadingRender(true, elements);
@@ -71,9 +73,11 @@ const form = (dataContainer, resultContainer) => {
           const rss = data.querySelectorAll('rss');
           let rssError = '';
           if (rss.length > 0) {
+            state.field = '';
             const urlId = uniqueId();
             state.urls.push({ id: urlId, url });
-            result(data, urlId, resultContainer, state);
+            result(data, urlId, resultContainer);
+            elements.successBlock.textContent = i18next.t('form.success');
           } else {
             rssError = i18next.t('form.errors.invalidRSS');
           }
@@ -87,10 +91,6 @@ const form = (dataContainer, resultContainer) => {
   });
 
   layout(state, elements);
-
-  setInterval(() => {
-    checkUpdates(state);
-  }, 15000);
 };
 
 export default form;

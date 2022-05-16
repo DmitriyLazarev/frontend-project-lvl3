@@ -5,6 +5,7 @@ import { isArray } from 'lodash';
 
 const renderErrors = (elements, errors) => {
   elements.field.classList.add('is-invalid');
+  elements.successBlock.textContent = '';
   elements.errorBlock.textContent = isArray(errors.errors) ? errors.errors.join(' ') : errors.message;
 };
 

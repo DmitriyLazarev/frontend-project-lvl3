@@ -21,6 +21,7 @@ const layout = (state, elements) => {
   elements.inputLabel.textContent = i18next.t('form.inputLabel');
 
   elements.errorBlock.classList.add('feedback', 'mb-0', 'mt-2', 'text-danger', 'small');
+  elements.successBlock.classList.add('feedback', 'mb-0', 'mt-2', 'text-success', 'small');
 
   elements.submitButton.setAttribute('type', 'submit');
   elements.submitButton.classList.add('h-100', 'btn', 'btn-lg', 'btn-primary', 'px-sm-5', 'mt-4');

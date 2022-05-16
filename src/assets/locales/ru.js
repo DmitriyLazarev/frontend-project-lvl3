@@ -5,6 +5,7 @@ export default {
     form: {
       inputLabel: 'Ссылка RSS',
       submitButton: 'Добавить',
+      success: 'RSS успешно загружен',
       errors: {
         wrongUrl: 'Ссылка должна быть валидным URL.',
         required: 'Поле должно быть заполнено.',

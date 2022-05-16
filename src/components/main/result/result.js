@@ -1,13 +1,15 @@
 import onChange from 'on-change';
 import dataParser from '../common/dataParser.js';
 import renderer from './renderers/renderer.js';
+import globalState from '../common/state.js';
+import checkUpdates from './check-updates.js';
 
-const result = (data, id, resultContainer, state) => {
-  const resultState = onChange(state, (path) => {
+const result = (data, urlId, resultContainer) => {
+  const state = onChange(globalState, (path) => {
     switch (path) {
       case 'feeds':
       case 'posts':
-        renderer(resultState, resultContainer);
+        renderer(state, resultContainer);
         break;
 
       default:
@@ -16,8 +18,15 @@ const result = (data, id, resultContainer, state) => {
   });
 
   const [feed, posts] = dataParser(data);
-  state.feeds.unshift({ urlId: id, ...feed });
-  state.posts.unshift({ urlId: id, posts });
+  state.feeds.unshift({ urlId, ...feed });
+  state.posts.unshift({ urlId, posts });
+
+  const delay = 5000;
+  setTimeout(function timer() {
+    checkUpdates(state)
+      .then(() => setTimeout(timer, delay))
+      .catch((e) => console.log(e));
+  }, delay);
 };
 
 export default result;
