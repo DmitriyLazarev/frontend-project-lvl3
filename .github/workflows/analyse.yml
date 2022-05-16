@@ -9,4 +9,4 @@ jobs:
       - name: Run NPM
         run: npm i
       - name: ESLint check
-        run: make lint
+        run: npx eslint .

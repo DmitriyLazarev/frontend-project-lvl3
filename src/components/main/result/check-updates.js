@@ -1,7 +1,7 @@
 // @ts-check
 /* eslint-disable no-param-reassign, no-console  */
 
-import { indexOf, isEqual } from 'lodash';
+import { indexOf } from 'lodash';
 import rssParser from '../form/modules/rss-parser.js';
 import dataParser from '../common/dataParser.js';
 
