@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "RSS aggregator",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,6 @@
     "type": "git",
     "url": "git+https://github.com/DmitriyLazarev/frontend-project-lvl3.git"
   },
-  "private": true,
   "author": "Dmitriy Lazarev",
   "license": "ISC",
   "bugs": {

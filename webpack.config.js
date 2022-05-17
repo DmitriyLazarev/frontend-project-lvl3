@@ -2,8 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: './src/index.js',
+  mode: process.env.NODE_ENV || 'development',
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname),
@@ -18,9 +17,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      minify: true,
       template: 'template.html',
-      filename: 'index.html',
     }),
   ],
 };

@@ -1,12 +1,11 @@
-# Makefile
-build:
-	npm run build
-
-lint:
-	npx eslint .
+develop:
+	npx webpack serve
 
 install:
 	npm ci
 
-start:
-	npx webpack serve
+build:
+	NODE_ENV=production npx webpack
+
+lint:
+	npx eslint .

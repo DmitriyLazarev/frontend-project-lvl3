@@ -7,6 +7,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run NPM
-        run: npm i
+        run: |
+          make install
+          make build
       - name: ESLint check
-        run: npx eslint .
+        run: make lint
