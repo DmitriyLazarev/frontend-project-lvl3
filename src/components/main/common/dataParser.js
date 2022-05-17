@@ -6,7 +6,6 @@ const dataParser = (data) => {
     title: data.querySelector('title').textContent,
     description: data.querySelector('description').textContent,
   };
-
   const items = data.querySelectorAll('item');
   const posts = [];
   items.forEach((item) => {
@@ -24,11 +23,9 @@ const dataParser = (data) => {
       title: item.querySelector('title').textContent,
       content,
       link: item.querySelector('link').textContent,
-      isRead: false,
     };
     posts.push(post);
   });
-
   return [feed, posts];
 };
 
