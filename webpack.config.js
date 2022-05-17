@@ -19,7 +19,7 @@ export default {
     ],
   },
   output: {
-    publicPath: path.resolve('public'),
+    path: path.resolve(__dirname, 'public'),
   },
   plugins: [
     new HtmlWebpackPlugin({
