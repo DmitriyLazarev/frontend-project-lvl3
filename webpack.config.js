@@ -1,5 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as path from 'path';
+
+const path = require('path');
 
 export default {
   mode: process.env.NODE_ENV || 'development',
