@@ -16,8 +16,6 @@ const result = (data, urlId, resultContainer) => {
 
       case 'activePostId':
         modalRenderer(value, state);
-        console.log(state);
-
         break;
 
       default:
