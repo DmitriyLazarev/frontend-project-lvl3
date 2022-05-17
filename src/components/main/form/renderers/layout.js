@@ -11,6 +11,7 @@ const layout = (state, elements) => {
   elements.field.setAttribute('name', name);
   elements.field.setAttribute('id', name);
   elements.field.setAttribute('autocomplete', 'off');
+  elements.field.setAttribute('aria-label', 'url');
   elements.field.setAttribute('autofocus', 'true');
   elements.field.setAttribute('placeholder', 'https://example.com/example.rss');
   elements.field.classList.add('form-control', 'w-100', 'form-control-lg');
