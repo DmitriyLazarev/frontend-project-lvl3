@@ -4,15 +4,13 @@
   "description": "RSS aggregator",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DmitriyLazarev/frontend-project-lvl3.git"
   },
-  "eslintIgnore": [
-    "index.js"
-  ],
   "private": true,
   "author": "Dmitriy Lazarev",
   "license": "ISC",
