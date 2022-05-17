@@ -1,21 +1,19 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
+  mode: process.env.NODE_ENV || 'development',
   entry: './index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-  },
-  devServer: {
-    open: true,
-    host: 'localhost',
+    path: path.resolve(__dirname),
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      minify: true,
+      template: 'template.html',
+      filename: 'index.html',
     }),
   ],
   module: {
@@ -27,13 +25,11 @@ const config = {
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
-  performance: { hints: false },
 };
 
 module.exports = () => {
   if (isProduction) {
     config.mode = 'production';
-    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = 'development';
   }
