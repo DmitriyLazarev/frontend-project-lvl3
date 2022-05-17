@@ -1,5 +1,5 @@
-import modalHeader from './modal/modal-header.js';
-import modalFooter from './modal/modal-footer.js';
+import modalHeader from './modal-header.js';
+import modalFooter from './modal-footer.js';
 
 const modalLayout = () => {
   const modal = document.createElement('div');

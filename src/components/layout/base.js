@@ -1,4 +1,4 @@
-import modalLayout from './modal.js';
+import modalLayout from './modal/modal.js';
 import mainLayout from './main.js';
 import footerLayout from './footer.js';
 import infoLayout from './info.js';
