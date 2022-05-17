@@ -5,6 +5,7 @@ import modalRenderer from './renderers/modal-renderer.js';
 import checkUpdates from './check-updates.js';
 
 const result = (globalState, data, urlId, resultContainer) => {
+  console.log(globalState);
   const state = onChange(globalState, (path, value) => {
     switch (path) {
       case 'feeds':

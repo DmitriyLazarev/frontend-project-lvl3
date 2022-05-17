@@ -15,7 +15,7 @@
     "url": "git+https://github.com/DmitriyLazarev/frontend-project-lvl3.git"
   },
   "eslintIgnore": [
-    "main.js"
+    "index.js"
   ],
   "private": true,
   "author": "Dmitriy Lazarev",

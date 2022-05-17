@@ -106,7 +106,7 @@ const form = (globalState, dataContainer, resultContainer) => {
           if (rss.length > 0) {
             const urlId = uniqueId();
             state.urls.push({ id: urlId, url });
-            result(state, data, urlId, resultContainer);
+            result(globalState, data, urlId, resultContainer);
             state.form.processState = 'success';
             return;
           }

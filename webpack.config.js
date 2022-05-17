@@ -7,6 +7,7 @@ const config = {
   mode: process.env.NODE_ENV || 'development',
   entry: './src/index.js',
   output: {
+    filename: 'index.js',
     path: path.resolve(__dirname),
   },
   plugins: [
