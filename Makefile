@@ -1,11 +1,10 @@
-develop:
-	npx webpack serve
-
-install:
-	npm ci
-
-build:
-	NODE_ENV=production npx webpack
-
 lint:
 	npx eslint .
+install:
+	npm install
+serve:
+	npx webpack serve
+build:
+	npm run build
+fix:
+	npx eslint . --fix
