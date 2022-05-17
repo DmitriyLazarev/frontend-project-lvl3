@@ -6,7 +6,6 @@ import i18next from 'i18next';
 import { isEmpty } from 'lodash';
 import uniqueId from 'lodash/uniqueId';
 import result from '../result/result.js';
-import globalState from '../common/state.js';
 import layout from './renderers/layout.js';
 import renderErrors from './renderers/errors.js';
 import validate from './modules/validator.js';
@@ -68,7 +67,7 @@ const watchedState = (elements) => (path, value) => {
   }
 };
 
-const form = (dataContainer, resultContainer) => {
+const form = (globalState, dataContainer, resultContainer) => {
   const formElement = document.createElement('form');
   const inputLabel = document.createElement('label');
   const input = document.createElement('input');
@@ -107,7 +106,7 @@ const form = (dataContainer, resultContainer) => {
           if (rss.length > 0) {
             const urlId = uniqueId();
             state.urls.push({ id: urlId, url });
-            result(data, urlId, resultContainer);
+            result(state, data, urlId, resultContainer);
             state.form.processState = 'success';
             return;
           }

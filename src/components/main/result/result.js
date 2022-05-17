@@ -2,10 +2,9 @@ import onChange from 'on-change';
 import dataParser from '../common/dataParser.js';
 import renderer from './renderers/renderer.js';
 import modalRenderer from './renderers/modal-renderer.js';
-import globalState from '../common/state.js';
 import checkUpdates from './check-updates.js';
 
-const result = (data, urlId, resultContainer) => {
+const result = (globalState, data, urlId, resultContainer) => {
   const state = onChange(globalState, (path, value) => {
     switch (path) {
       case 'feeds':
