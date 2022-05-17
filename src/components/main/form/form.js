@@ -4,7 +4,7 @@
 import onChange from 'on-change';
 import i18next from 'i18next';
 import { isEmpty } from 'lodash';
-import uniqueId from 'lodash/uniqueId';
+import uniqueId from 'lodash/uniqueId.js';
 import result from '../result/result.js';
 import layout from './renderers/layout.js';
 import renderErrors from './renderers/errors.js';
