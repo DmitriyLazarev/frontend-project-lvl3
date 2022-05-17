@@ -1,6 +1,9 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const path = require('path');
+const dirName = dirname(fileURLToPath(import.meta.url));
 
 export default {
   mode: process.env.NODE_ENV || 'development',
@@ -20,7 +23,7 @@ export default {
     ],
   },
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(dirName, 'public'),
   },
   plugins: [
     new HtmlWebpackPlugin({
