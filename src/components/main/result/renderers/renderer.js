@@ -43,7 +43,7 @@ const renderer = (state, resultContainer) => {
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
       const readClass = state.readPosts.includes(post.id) ? 'fw-normal' : 'fw-bold';
-      link.classList.add(readClass, 'link-secondary');
+      link.classList.add(readClass);
       link.textContent = post.title;
 
       const button = document.createElement('button');

@@ -11,7 +11,7 @@ export default {
         required: 'Не должно быть пустым',
         isIncluded: 'RSS уже существует',
         invalidRSS: 'Ресурс не содержит валидный RSS',
-        network: 'Ошибка загрузки ресурса',
+        network: 'Ошибка сети',
       },
     },
     content: {

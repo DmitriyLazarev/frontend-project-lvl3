@@ -7,7 +7,7 @@ const layout = (state, elements) => {
   elements.form.classList.add('rss-form', 'text-body');
 
   const name = 'url';
-  elements.field.setAttribute('type', 'url');
+  elements.field.setAttribute('type', 'text');
   elements.field.setAttribute('name', name);
   elements.field.setAttribute('id', name);
   elements.field.setAttribute('autocomplete', 'off');
