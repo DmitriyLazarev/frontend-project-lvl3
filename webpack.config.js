@@ -1,22 +1,42 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
-module.exports = {
-  mode: 'development',
-  entry: './src/index.js',
+const isProduction = process.env.NODE_ENV === 'production';
+
+const config = {
+  entry: './index.js',
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname),
+    path: path.resolve(__dirname, 'dist'),
   },
+  devServer: {
+    open: true,
+    host: 'localhost',
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+    }),
+  ],
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        type: 'asset',
       },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({
-    title: 'RSS Aggregator',
-  })],
+  performance: { hints: false },
+};
+
+module.exports = () => {
+  if (isProduction) {
+    config.mode = 'production';
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+  } else {
+    config.mode = 'development';
+  }
+  return config;
 };
