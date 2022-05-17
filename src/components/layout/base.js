@@ -1,3 +1,4 @@
+import modalLayout from './modal.js';
 import mainLayout from './main.js';
 import footerLayout from './footer.js';
 import infoLayout from './info.js';
@@ -9,8 +10,9 @@ const baseLayout = () => {
   const [main, dataContainer, resultContainer] = mainLayout();
   const [title, description] = infoLayout();
   const footer = footerLayout();
+  const modal = modalLayout();
 
-  body.append(main, footer);
+  body.append(modal, main, footer);
   dataContainer.append(title, description);
 
   return [dataContainer, resultContainer];

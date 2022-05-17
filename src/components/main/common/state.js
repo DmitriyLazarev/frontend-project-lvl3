@@ -1,11 +1,14 @@
 const globalState = {
-  processState: 'filling',
-  errors: {},
-  valid: true,
-  field: '',
+  form: {
+    processState: 'filling',
+    errors: {},
+    valid: true,
+  },
   urls: [],
   feeds: [],
   posts: [],
+  readPosts: [],
+  activePostId: null,
 };
 
 export default globalState;

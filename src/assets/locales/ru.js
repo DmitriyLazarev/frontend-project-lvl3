@@ -21,5 +21,9 @@ export default {
       readMore: 'Читать полностью',
       close: 'Закрыть',
     },
+    modal: {
+      close: 'Закрыть',
+      read: 'Читать полностью',
+    },
   },
 };

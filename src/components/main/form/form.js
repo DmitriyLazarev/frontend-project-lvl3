@@ -8,23 +8,58 @@ import uniqueId from 'lodash/uniqueId';
 import result from '../result/result.js';
 import globalState from '../common/state.js';
 import layout from './renderers/layout.js';
-import loadingRender from './renderers/loading.js';
 import renderErrors from './renderers/errors.js';
-import renderValidForm from './renderers/valid-form.js';
 import validate from './modules/validator.js';
 import rssParser from './modules/rss-parser.js';
 
-const watchedState = (elements) => (path, value) => {
-  switch (path) {
-    case 'valid':
-      renderValidForm(elements);
+const handleProcessState = (elements, processState) => {
+  switch (processState) {
+    case 'error':
+      elements.loader.setAttribute('hidden', 'true');
+      elements.field.removeAttribute('disabled');
+      elements.submitButton.removeAttribute('disabled');
+      elements.field.classList.add('is-invalid');
+      elements.successBlock.style.display = 'none';
+      elements.errorBlock.style.display = 'block';
       break;
 
-    case 'errors':
+    case 'sending':
+      elements.loader.removeAttribute('hidden');
+      elements.submitButton.setAttribute('disabled', 'true');
+      elements.field.setAttribute('disabled', 'true');
+      elements.field.classList.remove('is-invalid');
+      break;
+
+    case 'success':
+      elements.successBlock.style.display = 'block';
+      elements.loader.setAttribute('hidden', 'true');
+      elements.field.removeAttribute('disabled');
+      elements.submitButton.removeAttribute('disabled');
+      elements.successBlock.textContent = i18next.t('form.success');
+      elements.field.value = '';
+      elements.field.focus();
+      break;
+
+    default:
+      throw new Error(`Unknown process state: ${processState}`);
+  }
+};
+
+const watchedState = (elements) => (path, value) => {
+  switch (path) {
+    case 'form.processState':
+      handleProcessState(elements, value);
+      break;
+
+    case 'form.valid':
+      elements.field.classList.remove('is-invalid');
+      elements.errorBlock.style.display = 'none';
+      break;
+
+    case 'form.errors':
       renderErrors(elements, value);
       break;
 
-    case 'field':
     case 'urls':
       break;
 
@@ -60,31 +95,28 @@ const form = (dataContainer, resultContainer) => {
   formElement.addEventListener('submit', (e) => {
     e.preventDefault();
     const url = formElement.elements.url.value;
-    state.field = url;
-    state.errors = validate(state.field, state.urls);
-    state.valid = isEmpty(state.errors);
-    elements.successBlock.textContent = '';
+    state.form.errors = validate(url, state.urls);
+    state.form.valid = isEmpty(state.form.errors);
+    state.form.processState = isEmpty(state.form.errors) ? 'sending' : 'error';
 
-    if (state.valid) {
-      loadingRender(true, elements);
+    if (state.form.valid) {
       const parser = rssParser(url);
       parser
         .then((data) => {
           const rss = data.querySelectorAll('rss');
-          let rssError = '';
           if (rss.length > 0) {
-            state.field = '';
             const urlId = uniqueId();
             state.urls.push({ id: urlId, url });
             result(data, urlId, resultContainer);
-            elements.successBlock.textContent = i18next.t('form.success');
-          } else {
-            rssError = i18next.t('form.errors.invalidRSS');
+            state.form.processState = 'success';
+            return;
           }
-          loadingRender(false, elements, rssError);
+          state.form.processState = 'error';
+          state.form.errors = i18next.t('form.errors.invalidRSS');
         })
         .catch((error) => {
-          elements.errorBlock.textContent = i18next.t('form.errors.network');
+          state.form.processState = 'error';
+          state.form.errors = i18next.t('form.errors.network');
           console.log(error);
         });
     }

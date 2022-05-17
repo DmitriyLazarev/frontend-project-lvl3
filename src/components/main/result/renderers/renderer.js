@@ -42,14 +42,24 @@ const renderer = (state, resultContainer) => {
       link.setAttribute('href', post.link);
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
-      link.classList.add('fw-bold', 'link-secondary');
+      const readClass = state.readPosts.includes(post.id) ? 'fw-normal' : 'fw-bold';
+      link.classList.add(readClass, 'link-secondary');
       link.textContent = post.title;
 
       const button = document.createElement('button');
       button.setAttribute('type', 'button');
       button.setAttribute('data-post-id', post.id);
+      button.setAttribute('data-bs-target', '#modal');
+      button.setAttribute('data-bs-toggle', 'modal');
       button.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'ms-2');
       button.textContent = i18next.t('content.watchButton');
+
+      button.addEventListener('click', () => {
+        if (!state.readPosts.includes(post.id)) {
+          state.readPosts.push(post.id);
+        }
+        state.activePostId = post.id;
+      });
 
       postBlock.append(link, button);
       postsList.append(postBlock);

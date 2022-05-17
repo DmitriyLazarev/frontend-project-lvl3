@@ -11,8 +11,8 @@ const dataParser = (data) => {
   const posts = [];
   items.forEach((item) => {
     let content = '';
-    const descriptionBlock = item.querySelector('description') !== null;
-    const contentBlock = item.getElementsByTagNameNS('*', 'encoded').item(0) !== null;
+    const descriptionBlock = item.querySelector('description');
+    const contentBlock = item.getElementsByTagNameNS('*', 'encoded').item(0);
     if (descriptionBlock !== null) {
       content = descriptionBlock.textContent;
     }
@@ -24,6 +24,7 @@ const dataParser = (data) => {
       title: item.querySelector('title').textContent,
       content,
       link: item.querySelector('link').textContent,
+      isRead: false,
     };
     posts.push(post);
   });
