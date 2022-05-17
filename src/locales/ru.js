@@ -7,11 +7,11 @@ export default {
       submitButton: 'Добавить',
       success: 'RSS успешно загружен',
       errors: {
-        wrongUrl: 'Ссылка должна быть валидным URL.',
-        required: 'Поле должно быть заполнено.',
-        isIncluded: 'RSS уже существует.',
-        invalidRSS: 'Ресурс не содержит валидный RSS.',
-        network: 'Ошибка загрузки ресурса.',
+        wrongUrl: 'Ссылка должна быть валидным URL',
+        required: 'Не должно быть пустым',
+        isIncluded: 'RSS уже существует',
+        invalidRSS: 'Ресурс не содержит валидный RSS',
+        network: 'Ошибка загрузки ресурса',
       },
     },
     content: {
