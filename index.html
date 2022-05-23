@@ -5,6 +5,51 @@
     <title>RSS Aggregator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
-  <body>
+  <body
+    class="d-flex flex-column min-vh-100">
+    <div class="modal fade" tabindex="-1" id="modal">
+      <div role="document" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-title"></h5>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <a target="_blank" class="btn btn-primary modal-read" id="modal-link">Читать полностью</a>
+            <a type="button" data-bs-dismiss="modal" id="modal-close" class="btn btn-secondary">Закрыть</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main class="flex-grow-1 d-flex flex-column">
+      <section class="container-fluid bg-dark p-5 text-white">
+        <div class="container text-white">
+          <div class="row text-white">
+            <div class="col text-white">
+              <h1 class="display-3 mb-0">RSS агрегатор</h1>
+              <p class="lead">Начните читать RSS сегодня! Это легко, это красиво.</p>
+              <form class="rss-form text-body">
+                <label for="url" class="rss-input-label text-white mb-2">Ссылка RSS</label>
+                <input type="text" name="url" id="url" autocomplete="off" aria-label="url" autofocus="true" placeholder="https://example.com/example.rss" class="form-control rss-input w-100 form-control-lg">
+                <p class="feedback feedback-error mb-0 mt-2 text-danger small"></p>
+                <p class="feedback feedback-success mb-0 mt-2 text-success small"></p>
+                <button type="submit" class="submit-button h-100 btn btn-lg btn-primary px-sm-5 mt-4">
+                  <span class="submit-button-loader spinner-border spinner-border-sm me-2" role="status" hidden="true" aria-hidden="true"></span>
+                  Добавить
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="container-fluid flex-grow-1 p-5">
+        <div class="result-container container"></div>
+      </section>
+    </main>
+    <footer class="footer py-3 border-top bg-light">
+      <div class="container-xl">
+        <p class="text-center mb-0">created by Dmitriy Lazarev</p>
+      </div>
+    </footer>
   </body>
 </html>

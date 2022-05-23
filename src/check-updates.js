@@ -2,30 +2,22 @@
 /* eslint-disable no-param-reassign, no-console  */
 
 import { indexOf } from 'lodash';
-import rssParser from '../form/modules/rss-parser.js';
-import dataParser from '../common/dataParser.js';
-
-const createNewData = (state) => {
-  const result = [];
-  const resultIds = [];
-  state.urls.forEach((url) => {
-    result.unshift(rssParser(url.url));
-    resultIds.unshift(url.id);
-  });
-  return [resultIds, Promise.all(result)];
-};
+import parseRSS, { fetchRSS } from './parser-rss.js';
 
 const checkUpdates = (state) => {
-  const newParsedData = [];
-  const [urlIds, promiseAll] = createNewData(state);
-  promiseAll
+  const requests = state.urls.map((url) => fetchRSS(url.url)
+    .catch((err) => {
+      console.error(err);
+    })
+    .then((data) => parseRSS(data.data.contents))
+    .then((data) => {
+      const [, posts] = data;
+      return { urlId: url.id, posts };
+    }));
+
+  return Promise.all(requests)
     .then((data) => {
       data.forEach((item) => {
-        const itemIndex = indexOf(data, item);
-        const [, posts] = dataParser(item, state);
-        newParsedData.push({ urlId: urlIds[itemIndex], posts });
-      });
-      newParsedData.forEach((item) => {
         const oldPosts = state.posts.find((post) => post.urlId === item.urlId);
 
         const lastOldPost = oldPosts.posts[0];
@@ -39,9 +31,7 @@ const checkUpdates = (state) => {
           state.posts.unshift({ urlId: item.urlId, posts: newData });
         }
       });
-    })
-    .catch((error) => error);
-  return promiseAll;
+    });
 };
 
 export default checkUpdates;

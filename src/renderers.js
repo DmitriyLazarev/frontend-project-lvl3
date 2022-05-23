@@ -2,8 +2,9 @@
 /* eslint-disable no-param-reassign, no-console  */
 
 import i18next from 'i18next';
+import { isArray, isObject } from 'lodash';
 
-const renderer = (state, resultContainer) => {
+export const resultRenderer = (state, resultContainer) => {
   resultContainer.innerHTML = '';
 
   const row = document.createElement('div');
@@ -86,4 +87,31 @@ const renderer = (state, resultContainer) => {
   resultContainer.append(row);
 };
 
-export default renderer;
+export const modalRenderer = (activePostId, state) => {
+  const modalTitle = document.querySelector('.modal-title');
+  const modalBody = document.querySelector('.modal-body');
+  const modalLink = document.querySelector('.modal-read');
+  state.posts.forEach((item) => {
+    item.posts.forEach((post) => {
+      if (post.id === activePostId) {
+        modalTitle.textContent = post.title;
+        modalBody.textContent = post.content;
+        modalLink.setAttribute('href', post.link);
+      }
+    });
+  });
+};
+
+export const errorsRenderer = (elements, errors) => {
+  let errorText = '';
+  if (!isObject(errors)) {
+    errorText = i18next.t(errors);
+  } else if (isArray(errors.errors)) {
+    errorText = errors.errors.map((error) => i18next.t(error)).join(' ');
+  } else {
+    errorText = i18next.t(errors.message);
+  }
+  elements.errorBlock.textContent = errorText;
+};
+
+export default resultRenderer;
