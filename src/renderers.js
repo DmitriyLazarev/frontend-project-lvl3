@@ -34,37 +34,35 @@ export const resultRenderer = (state, resultContainer) => {
   feedsList.classList.add('list-group', 'border-0', 'rounded-0');
   feedsColumn.append(feedsList);
 
-  state.posts.forEach((item) => {
-    item.posts.forEach((post) => {
-      const postBlock = document.createElement('li');
-      postBlock.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0', 'ps-0', 'pr-0');
+  state.posts.forEach((post) => {
+    const postBlock = document.createElement('li');
+    postBlock.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0', 'ps-0', 'pr-0');
 
-      const link = document.createElement('a');
-      link.setAttribute('href', post.link);
-      link.setAttribute('target', '_blank');
-      link.setAttribute('rel', 'noopener noreferrer');
-      const readClass = state.readPosts.includes(post.id) ? 'fw-normal' : 'fw-bold';
-      link.classList.add(readClass);
-      link.textContent = post.title;
+    const link = document.createElement('a');
+    link.setAttribute('href', post.link);
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+    const readClass = state.readPosts.includes(post.id) ? 'fw-normal' : 'fw-bold';
+    link.classList.add(readClass);
+    link.textContent = post.title;
 
-      const button = document.createElement('button');
-      button.setAttribute('type', 'button');
-      button.setAttribute('data-post-id', post.id);
-      button.setAttribute('data-bs-target', '#modal');
-      button.setAttribute('data-bs-toggle', 'modal');
-      button.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'ms-2');
-      button.textContent = i18next.t('content.watchButton');
+    const button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.setAttribute('data-post-id', post.id);
+    button.setAttribute('data-bs-target', '#modal');
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'ms-2');
+    button.textContent = i18next.t('content.watchButton');
 
-      button.addEventListener('click', () => {
-        if (!state.readPosts.includes(post.id)) {
-          state.readPosts.push(post.id);
-        }
-        state.activePostId = post.id;
-      });
-
-      postBlock.append(link, button);
-      postsList.append(postBlock);
+    button.addEventListener('click', () => {
+      if (!state.readPosts.includes(post.id)) {
+        state.readPosts.push(post.id);
+      }
+      state.activePostId = post.id;
     });
+
+    postBlock.append(link, button);
+    postsList.append(postBlock);
   });
 
   state.feeds.forEach((feed) => {
@@ -91,14 +89,12 @@ export const modalRenderer = (activePostId, state) => {
   const modalTitle = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const modalLink = document.querySelector('.modal-read');
-  state.posts.forEach((item) => {
-    item.posts.forEach((post) => {
-      if (post.id === activePostId) {
-        modalTitle.textContent = post.title;
-        modalBody.textContent = post.content;
-        modalLink.setAttribute('href', post.link);
-      }
-    });
+  state.posts.forEach((post) => {
+    if (post.id === activePostId) {
+      modalTitle.textContent = post.title;
+      modalBody.textContent = post.content;
+      modalLink.setAttribute('href', post.link);
+    }
   });
 };
 

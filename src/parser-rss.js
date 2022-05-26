@@ -1,8 +1,3 @@
-import uniqueId from 'lodash/uniqueId.js';
-import axios from 'axios';
-
-export const fetchRSS = (url) => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`);
-
 const parserRSS = (rssContent) => {
   const data = new DOMParser().parseFromString(rssContent, 'text/xml');
 
@@ -15,7 +10,6 @@ const parserRSS = (rssContent) => {
   }
 
   const feed = {
-    id: uniqueId(),
     title: data.querySelector('title').textContent,
     description: data.querySelector('description').textContent,
   };
@@ -32,7 +26,6 @@ const parserRSS = (rssContent) => {
       content = contentBlock.textContent;
     }
     const post = {
-      id: uniqueId(),
       title: item.querySelector('title').textContent,
       content,
       link: item.querySelector('link').textContent,

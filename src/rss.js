@@ -2,19 +2,20 @@ import { Modal } from 'bootstrap';
 import i18next from 'i18next';
 import onChange from 'on-change';
 import {
-  isEmpty, isUndefined,
+  isEmpty,
 } from 'lodash';
 import uniqueId from 'lodash/uniqueId.js';
 import * as yup from 'yup';
 import ru from './locales/ru.js';
-import parseRSS, { fetchRSS } from './parser-rss.js';
+import parseRSS from './parser-rss.js';
 import { resultRenderer, errorsRenderer, modalRenderer } from './renderers.js';
 import checkUpdates from './check-updates.js';
+import fetchRSS from './fetch-rss.js';
 
 const validate = (value, urls) => {
   const schema = yup.string()
     .url('form.errors.wrongUrl')
-    .test('isIncluded', 'form.errors.isIncluded', (v) => isUndefined(urls.find((url) => url.url === v)))
+    .notOneOf(urls, 'form.errors.isIncluded')
     .required('form.errors.required');
 
   try {
@@ -126,7 +127,6 @@ export default () => {
       errors: {},
       valid: true,
     },
-    urls: [],
     feeds: [],
     posts: [],
     readPosts: [],
@@ -149,27 +149,27 @@ export default () => {
     formElement.addEventListener('submit', (e) => {
       e.preventDefault();
       const url = formElement.elements.url.value;
-      state.form.errors = validate(url, state.urls);
+      const urlsList = state.feeds.map((feed) => feed.url);
+      state.form.errors = validate(url, urlsList);
       state.form.valid = isEmpty(state.form.errors);
       state.form.processState = isEmpty(state.form.errors) ? 'sending' : 'error';
 
       if (state.form.valid) {
         fetchRSS(url)
-          .then((data) => parseRSS(data.data.contents))
           .then((data) => {
             state.form.processState = 'success';
-            const urlId = uniqueId();
-            state.urls.push({ id: urlId, url });
-            const [feed, posts] = data;
-            state.feeds.unshift({ urlId, ...feed });
-            state.posts.unshift({ urlId, posts });
+            const [feed, posts] = parseRSS(data.data.contents);
+            feed.url = url;
 
-            const delay = 5000;
-            setTimeout(function timer() {
-              checkUpdates(state)
-                .then(() => setTimeout(timer, delay))
-                .catch((timeoutError) => console.log(timeoutError));
-            }, delay);
+            const newPosts = posts.map((post) => {
+              post.id = uniqueId();
+              return post;
+            });
+
+            state.feeds.unshift(feed);
+            state.posts = [...newPosts, ...state.posts];
+
+            checkUpdates(state);
           })
           .catch((error) => {
             state.form.processState = 'error';
