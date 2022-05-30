@@ -140,8 +140,8 @@ export default () => {
       ru,
     },
   }).then(() => {
-    Array.from(document.querySelectorAll('.toast'))
-      .forEach((toastNode) => new Modal(toastNode));
+    Array.from(document.querySelectorAll('.modal'))
+      .forEach((modalNode) => new Modal(modalNode));
 
     const state = watchedState(globalState, elements);
     const { formElement } = elements;
